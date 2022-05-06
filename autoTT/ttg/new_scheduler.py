@@ -1,91 +1,18 @@
 import random
 from tkinter import *
 from tkinter import ttk
-
 from ttg.model import *
-
 import ttg.timetable as timetable
 
-# from open_electives import open_elective
-# from labs import lab
-# from lectures import lectures
-# from labs_room_choices import labs_room_choices
-# from professors import prof
 
 POPULATION_SIZE = 25
 
-# def tk_print(d):
-#         class Table:
-
-#             def __init__(self, root, temp):
-#                 total_rows = len(temp)
-#                 total_columns = len(temp[0])
-
-#                 # code for creating table
-#                 for i in range(total_rows):
-#                     for j in range(total_columns):
-#                         # self.e = Entry(root, fg='black',width=20,
-#                         #                font=('Arial', 16, 'bold'))
-#                         e = Text(root, fg='white',bg = 'black',height=2, width=21,font=('Arial', 16, 'bold'))
-#                         e.grid(row=i, column=j)
-#                         e.insert(END, temp[i][j])
-
-#                     # take the data
-
-#         # create root window
-#         root = Tk()
-#         root.title("Tab Widget")
-#         tabControl = ttk.Notebook(root)
-#         for i, _ in enumerate(d):
-#             title = ttk.Frame(tabControl)
-#             tabControl.add(title, text=str(_))
-#             t = Table(title, d[_])
-#         tabControl.pack(expand=1, fill="both")
-#         root.mainloop()
-
 
 def initiation(course_list,professor_list,batch_list):
-    # course_list = []
-    # professor_list = []
-    # batch_list = []
-
-    # for _ in range(0, len(open_elective), 3):
-    #     c = Course()
-    #     c.create_lecture(open_elective[_], open_elective[_ + 1], open_elective[_ + 2], 2, 2)
-    #     course_list.append(c)
-
-    # for _ in range(0, len(lectures), 3):
-    #     c = Course()
-    #     c.create_lecture(lectures[_], lectures[_ + 1], lectures[_ + 2], 1, 4)
-    #     course_list.append(c)
-
-    # for _ in range(0, len(lab), 3):
-    #     c = Course()
-    #     c.create_lab_course(lab[_], lab[_ + 1], lab[_ + 2], labs_room_choices[_ // 3])
-    #     course_list.append(c)
-        
-    # # print(course_list, len(course_list))
-
-    # for i, _ in enumerate(prof):
-    #     t = Professor('CSE', i, _)
-    #     professor_list.append(t)
-    # # print(professor_list, len(professor_list))
-
-    # b_room = ['R1', 'R2', 'R3', 'R4']
-    # for _ in range(4):
-    #     t = Batch('CSE', 3, _ + 1, b_room[_], False)
-    #     batch_list.append(t)
-
-    # b_room = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'R8',
-	# 	'R9', 'R10', 'R11', 'R12', 'R13', 'R14', 'R15', 'R16']
-    # for _ in range(16):
-    #     t = Batch('CSE', 4, _ + 1, b_room[_], False)
-    #     batch_list.append(t)
-    # print(batch_list, len(batch_list))
 
     data = []
 
-    # Create Compound data first
+    # Create Compound data
     for c in course_list:
         course = set()
         course.add(c)
@@ -94,6 +21,7 @@ def initiation(course_list,professor_list,batch_list):
             for b in batch_list:
                 batch.add(b)
             data.append(Data().create_compound_data(batch, course))
+
 
     # Create Lecture Data 
     for b in batch_list:
