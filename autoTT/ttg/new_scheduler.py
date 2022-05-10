@@ -11,56 +11,89 @@ POPULATION_SIZE = 25
 def initiation(course_list,professor_list,batch_list):
 
     data = []
+    data_length = len(course_list)
 
-    # Create Compound data
-    for c in course_list:
-        course = set()
-        course.add(c)
+    # Create Compound data - for electives
+    batch = set()
+    for b in batch_list:
+        batch.add(b)
+
+    for c in course_list:        
         if c.course_type == "elective":
-            batch = set()
-            for b in batch_list:
-                batch.add(b)
+            course = set()
+            course.add(c)
+            # print('\n##################  ELECTIVES #######################')
+            # print("course === ", c.course_short_form)
+            # print('#################################################################\n')
             data.append(Data().create_compound_data(batch, course))
 
 
-    # Create Lecture Data 
-    for b in batch_list:
-        batch = set()
-        batch.add(b)
-        for c in course_list:
-            course = set()
-            course.add(c)
-            for p in professor_list:
-                prof = set()
-                prof.add(p)
-                if c.course_id in p.prof_courses.split(", ") and c.course_type=="lecture":
-                    data.append(Data().create_lecture_data(batch, course, prof))
-                    break
+    # Create Lecture data - for regular subjects    
+    for i in range(data_length):
+        if course_list[i].course_type == 'lecture':
+            batch, course, prof = set(), set(), set()
+            batch.add(batch_list[i])
+            course.add(course_list[i])
+            prof.add(professor_list[i])
+            # print('\n##################  LECTURES #######################')
+            # print('batch === ',batch_list[i].year, "-", batch_list[i].dept_name, "-", batch_list[i].section)
+            # print("course === ", course_list[i].course_short_form)
+            # print("professor === ", professor_list[i].professor_name)
+            # print('#################################################################\n')
+            data.append(Data().create_lecture_data(batch,course,prof))
 
-    # create lab data 
-    for b in batch_list:
-        batch = set()
-        batch.add(b)
-        courses = set()
-        for c in courses:
-            if c.course_type == "lab":
-                courses.add(c)
-        prof = set()
-        for p in professor_list:
-            for pc in p.prof_courses.split(", "):
-                if pc in courses:
-                    prof.add(p)
-        data.append(Data().create_lab_data(batch, courses, prof, 3, 1))
+
+    # Create Lab data - for electives
+    # labs = [] #index list of lab courses
+    # lab_pairs = []
+    # for i in range(data_length):
+    #     if course_list[i].course_type == "lab":
+    #         labs.append(course_list[i])
+
+    # # labs = [a,b,c,d] - len=4
+    # if len(labs) % 2 == 0:
+    #     for i in range(0,len(labs),2):
+    #         temp = set()
+    #         temp.add(labs[i])
+    #         temp.add(labs[i+1])
+    #         lab_pairs.append(temp)
+    # # labs = [a,b,c] - len=3
+    # else:        
+    #     for i in range(0,len(labs)-1,2):
+    #         temp = set()
+    #         temp.add(labs[i])
+    #         temp.add(labs[i+1])
+    #         lab_pairs.append(temp)
+    #     temp = set()
+    #     temp.add(labs[-2])
+    #     temp.add(labs[-1])
+    #     lab_pairs.append(temp)
+
+
+    # for i in range(data_length):
+    #     batch = set()
+    #     batch.add(batch_list[i])
+    #     for pair in lab_pairs:
+    #         prof = set()
+    #         for l in pair:
+    #             prof.add(professor_list[i])
+    #             # print('\n##################  LABS #######################')
+    #             # print('batch === ',b.year, "-", b.dept_name, "-", b.section)
+    #             # print("course === ", l.course_short_form)
+    #             # print("professor === ", professor_list[i].professor_name)
+    #             # print('#################################################################\n')
+    #         data.append(Data().create_lab_data(batch, pair, prof, 3, 1))
 
     # create pseudo data - for empty slots
+    batch = set()
     for b in batch_list:
-        batch = set()
         batch.add(b)
-        data.append(Data().create_pseudo_data(batch,1,3))
+    data.append(Data().create_pseudo_data(batch,1,3))
 
-
-
-
+    # electives --- All batches + 1 course -- OK
+    # lecture -- 1 batch + 1 course + 1 prof -- MAPPING 
+    # lab -- 1 batch + split all labs into pairs + all lab profs
+    # empty -- all batches + duration + freq
 
     # data = [
     #     Data().create_compound_data({batch_list[0], batch_list[1]}, {course_list[0]}),
@@ -103,6 +136,8 @@ def scheduler(course_list,professor_list,batch_list):
     # print(batch_list, professor_list, course_list, data)
     print('\n#################################################################')
     print('data === ', data)
+    print('#################################################################\n')
+    print("data length === \n",len(data))
     print('#################################################################\n')
 
     # Start

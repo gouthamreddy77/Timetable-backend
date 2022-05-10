@@ -1,21 +1,28 @@
-professor_id,professor_name,department
-1,Dr. C Kiran Mai,CSE
-2,Dr. M Raja Sekar,CSE
-3,Dr.B.V.Kiranmayee,CSE
-4,Dr.S Nagini,CSE
-5,Mrs.V.Baby,CSE
-6,Dr.P V Siva Kumar,CSE
-7,Dr.Sagar Yeruva,CSE
-8,Dr.A Brahmananda,CSE
-9,Dr.P Subhash,CSE
-10,Kousar Nikhath,CSE
-11,Mrs.N V Sailaja,CSE
-12,Mrs.Vijaya Saraswathi,CSE
-13,Mrs.P Radhika,CSE
-14,Mr.Gnana Prakash T,CSE
-15,Vijaya Saraswathi,CSE
-16,P Venkateswara Rao,CSE
-17,Sandeep Chaitanya,CSE
-18,Mrs.Indira,CSE
-19,Hari Priya,CSE
-20,Chalumuru Suresh,CSE
+professor_id,professor_name
+1,Dr. C Kiran Mai
+10,Kousar Nikhath
+11,Mrs.N V Sailaja
+12,Mrs.Vijaya Saraswathi
+13,Mrs.P Radhika
+14,Mr.Gnana Prakash T
+15,Vijaya Saraswathi
+16,P Venkateswara Rao
+17,Sandeep Chaitanya
+18,Mrs.Indira
+19,Hari Priya
+2,Dr. M Raja Sekar
+20,Chalumuru Suresh
+21,Mr.Malige Gangappa
+22,Dr.Deepak Sukheja
+23,Mr.G S Ramesh
+24,Mrs.Tejaswi Potluri
+25,Mr.K.Bheemalingappa
+26,Mrs.P.Jyothi
+27,
+3,Dr.B.V.Kiranmayee
+4,Dr.S Nagini
+5,Mrs.V.Baby
+6,Dr.P V Siva Kumar
+7,Dr.Sagar Yeruva
+8,Dr.A Brahmananda
+9,Dr.P Subhash

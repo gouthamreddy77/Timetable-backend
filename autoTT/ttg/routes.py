@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request
 from ttg import app, db
-from ttg.model import Professor, Course, Batch
+from ttg.model import Professor, Course, Batch, Mapping
 from ttg.new_scheduler import scheduler
 from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.utils import secure_filename
@@ -49,7 +49,13 @@ def add_course():
 				duration, frequency = 1 , 4 
 			elif oe.course_type == 'lab':
 				preferred_rooms = subject.preferred_rooms
-			c = Course(subject.course_id, subject.course_name, subject.course_short_form,subject.course_type,duration,frequency,preferred_rooms)
+			c = Course(course_id = subject.course_id, 
+				course_name = subject.course_name, 
+				course_short_form = subject.course_short_form,
+				course_type = subject.course_type,
+				duration = duration,
+				frequency = frequency,
+				preferred_rooms = preferred_rooms)
 			# db.session.begin_nested()
 			db.session.add(c)
 			# db.session.flush()
@@ -94,7 +100,6 @@ def add_faculty():
 		{
 			professor_id: 1,
 			professor_name: 'ABC DEF',
-			department: 'CSE',
 			prof_courses: 'c1, c2, c3'
 		}
 		'''		
@@ -109,7 +114,9 @@ def add_faculty():
 		# If No, Add!
 		else:
     		# Create Faculty object and initialize		
-			p = Professor(f.department, f.professor_id, f.professor_name)
+			p = Professor(professor_id = f.professor_id, 
+				professor_name = f.professor_name,
+				prof_courses = f.prof_courses)
 			# db.session.begin_nested()
 			db.session.add(p)
 			# db.session.flush()
@@ -146,6 +153,7 @@ def view_faculty():
 
 ###################################################################
 
+
 def tk_print(d):
         class Table:
 
@@ -180,36 +188,51 @@ def tk_print(d):
 @app.route('/generate_timetable',methods=['GET'])
 def generate_timetable():
 	if request.method=='GET':
-		batch_list = []
-		# b_room = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'R8',
-		# 'R9', 'R10', 'R11', 'R12', 'R13', 'R14', 'R15', 'R16']
-		# for _ in range(16):
+		# b_room = ['R1', 'R2', 'R3', 'R4']
+		# for _ in range(4):
 		# 	t = Batch('CSE', 4, _ + 1, b_room[_], False)
 		# 	batch_list.append(t)
 
-		b_room = ['R1', 'R2', 'R3', 'R4']
-		for _ in range(4):
-			t = Batch('CSE', 4, _ + 1, b_room[_], False)
-			batch_list.append(t)
+		# b_room = ['R1', 'R2']
+		# for _ in range(2):
+		# 	t = Batch(4, 'CSE', _+1, b_room[_])
+		# 	batch_list.append(t)
+
+		mapped_data = Mapping.query.all()
+		batch_list, course_list, professor_list = [], [], []
+		for md in mapped_data:
+			batch = Batch.query.filter_by(batch_id=md.batch_id).first()
+			batch_list.append(batch)
+			course = Course.query.filter_by(course_id=md.course_id).first()
+			course_list.append(course)
+			professor = Professor.query.filter_by(professor_id=md.professor_id).first()
+			professor_list.append(professor)
+
+
+		# batch_list = Batch.query.all()
 		print('\n#################################################################')
 		print('batch_list === ',batch_list)
 		print('#################################################################\n')
 
-		course_list = Course.query.all()
+		# course_list = Course.query.all()
 		print('\n#################################################################')
 		print('course_list === ', course_list)
 		print('#################################################################\n')
 
-		faculty_list = p=Professor.query.all()
+		# faculty_list = p=Professor.query.all()
 		print('\n#################################################################')
-		print('faculty_list === ', faculty_list)
+		print('faculty_list === ', professor_list)
 		print('#################################################################\n')
 
 		timetable = {}
-		timetable = scheduler(course_list,faculty_list,batch_list)
+		timetable = scheduler(course_list,professor_list,batch_list)
 		print('\n#################################################################')
 		print("TIMETABLE === \n",timetable)
 		print('#################################################################\n')
 		tk_print(timetable)
+		return {
+			'status': 'SUCCESS',
+			'data': timetable
+			}
 		
 

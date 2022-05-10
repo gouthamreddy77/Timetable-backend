@@ -51,10 +51,11 @@ class Timetable:
         if _.is_lab:
             _.room = set()
             for c in _.course:
-                print('\n#################################################################')
-                print('course id === ', c.course_id)
-                print('course room === ', c.preferred_rooms)
-                print('#################################################################\n')
+                # print('\n#################################################################')
+                # print('course === ', c)
+                # print('course id === ', c.course_id)
+                # print('course room === ', c.preferred_rooms)
+                # print('#################################################################\n')
                 preferred_rooms = c.preferred_rooms.split(", ")
                 _.room.add(random.choice(preferred_rooms))
             if _.is_jnr:
@@ -134,7 +135,9 @@ class Timetable:
                         else:
                             mat[d, t][2].update(gene.data.room)
                 t += 1
-        # print('batch_collision: ' + str(batch_collision) + ' faculty_collision: ' + str(faculty_collision) + ' room_collision: ' + str(room_collision))
+        print('\n##################  COLLISIONS #######################')
+        print('batch_collision: ' + str(batch_collision) + ' faculty_collision: ' + str(faculty_collision) + ' room_collision: ' + str(room_collision))
+        print('#################################################################\n')
         return (batch_collision + faculty_collision + room_collision), mat
 
     def print_test(self):

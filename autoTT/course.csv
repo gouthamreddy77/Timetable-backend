@@ -3,8 +3,8 @@ course_id,course_name,course_short_form,course_type,duration,frequency,preferred
 18HS1MG02,Principles of Management,PMOB,lecture,1,4,
 18PE1IT13,Network Security,NS,elective,2,2,
 18PE1CS10,Neural Networks and Deep Learning,NNDL,elective,2,2,
-18PC2CS06,Big Data Analytics Laboratory ,BDA Lab,lab,3,2,"A110, A107"
+18PC2CS06,Big Data Analytics Laboratory ,BDA Lab,lab,3,2,A107
 18PE1CS08,Information Security Management,ISM,elective,2,2,
 18PE1EC08,Internet of Things,IOT,elective,2,2,
 18PW4CS05,Major Project Phase - I ,MAJOR,lab,3,2,A110
-18PW4CS04,Mini-Project ,MINI,lab,3,2,A107
+18PW4CS04,Mini-Project ,MINI,lab,3,2,A108
