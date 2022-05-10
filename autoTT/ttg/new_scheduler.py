@@ -3,97 +3,134 @@ from tkinter import *
 from tkinter import ttk
 from ttg.model import *
 import ttg.timetable as timetable
-
+from ttg.model import Professor, Course, Batch, Lectures, Labs, Electives
 
 POPULATION_SIZE = 25
 
+def split_labs_into_pairs(labs):
+    # print('\n##################  LABS - paired in function #######################')
+    # print('labs === ',labs)
+    # print('#################################################################\n')
+    lab_pairs = []
+    # labs = [a,b,c,d] - len=4
+    if len(labs) % 2 == 0:
+        for i in range(0,len(labs),2):
+            temp = set()
+            temp.add(labs[i])
+            temp.add(labs[i+1])
+            lab_pairs.append(temp)
+    # labs = [a,b,c] - len=3
+    else:        
+        for i in range(0,len(labs)-1,2):
+            temp = set()
+            temp.add(labs[i])
+            temp.add(labs[i+1])
+            lab_pairs.append(temp)
+        temp = set()
+        temp.add(labs[-1])
+        lab_pairs.append(temp)
+    return lab_pairs
 
-def initiation(course_list,professor_list,batch_list):
+
+
+def initiation(batch_list,mapped_lectures,mapped_electives,mapped_labs):
 
     data = []
-    data_length = len(course_list)
 
     # Create Compound data - for electives
+    # electives --- All batches + 1 course -- OK
     batch = set()
     for b in batch_list:
         batch.add(b)
 
-    for c in course_list:        
-        if c.course_type == "elective":
-            course = set()
-            course.add(c)
-            # print('\n##################  ELECTIVES #######################')
-            # print("course === ", c.course_short_form)
-            # print('#################################################################\n')
-            data.append(Data().create_compound_data(batch, course))
+    for e in mapped_electives:
+        c = Course.query.filter_by(course_id=e.course_id).first()
+        course = set()
+        course.add(c)
+        # print('\n##################  ELECTIVES #######################')
+        # print("course === ", c.course_short_form,"TYPE(c)=",type(c))
+        # print('#################################################################\n')
+        data.append(Data().create_compound_data(batch, course))
 
 
-    # Create Lecture data - for regular subjects    
-    for i in range(data_length):
-        if course_list[i].course_type == 'lecture':
-            batch, course, prof = set(), set(), set()
-            batch.add(batch_list[i])
-            course.add(course_list[i])
-            prof.add(professor_list[i])
-            # print('\n##################  LECTURES #######################')
-            # print('batch === ',batch_list[i].year, "-", batch_list[i].dept_name, "-", batch_list[i].section)
-            # print("course === ", course_list[i].course_short_form)
-            # print("professor === ", professor_list[i].professor_name)
-            # print('#################################################################\n')
-            data.append(Data().create_lecture_data(batch,course,prof))
+    # Create Lecture data - for regular subjects
+    # lecture -- 1 batch + 1 course + 1 prof -- MAPPING     
+    for l in mapped_lectures:
+        b = Batch.query.filter_by(batch_id=l.batch_id).first()
+        c = Course.query.filter_by(course_id=l.course_id).first()
+        p = Professor.query.filter_by(professor_id=l.professor_id).first()
+        batch, course, prof = set(), set(), set()
+        batch.add(b)
+        course.add(c)
+        prof.add(p)
+        # print('\n##################  LECTURES #######################')
+        # print('batch === ',b.year, "-", b.dept_name, "-", b.section,"TYPE(b)=",type(b))
+        # print("course === ", c.course_short_form,"TYPE(c)=",type(c))
+        # print("professor === ", p.professor_name,"TYPE(p)=",type(p))
+        # print('#################################################################\n')
+        data.append(Data().create_lecture_data(batch,course,prof))
 
 
     # Create Lab data - for electives
-    # labs = [] #index list of lab courses
-    # lab_pairs = []
-    # for i in range(data_length):
-    #     if course_list[i].course_type == "lab":
-    #         labs.append(course_list[i])
+    # lab -- 1 batch + split all labs into pairs + all lab profs
+    for b in batch_list:
+        labs = []
+        for lab in mapped_labs:
+            if lab.batch_id == b.batch_id:
+                labs.append(lab)
+        # labs = mapped_labs
+        pairs = []
+        for l in labs:
+            if l.can_be_paired == 0:
+                c = Course.query.filter_by(course_id=l.course_id).first()
+                p = Professor.query.filter_by(professor_id=l.professor_id).first()
+                batch, course, prof = set(), set(), set()
+                batch.add(b)
+                course.add(c)
+                prof.add(p)
+                # print('\n##################  LABS - Not to be paired #######################')
+                # print('batch === ',b.year, "-", b.dept_name, "-", b.section,"TYPE(b)=",type(b))
+                # print("course === ", c.course_short_form,"TYPE(c)=",type(c))
+                # print("professor === ", p.professor_name,"TYPE(p)=",type(p))
+                # print('#################################################################\n')
+                data.append(Data().create_lab_data(batch, course, prof, 3, 1))
+            else:
+                c = Course.query.filter_by(course_id=l.course_id).first()
+                pairs.append(c)
 
-    # # labs = [a,b,c,d] - len=4
-    # if len(labs) % 2 == 0:
-    #     for i in range(0,len(labs),2):
-    #         temp = set()
-    #         temp.add(labs[i])
-    #         temp.add(labs[i+1])
-    #         lab_pairs.append(temp)
-    # # labs = [a,b,c] - len=3
-    # else:        
-    #     for i in range(0,len(labs)-1,2):
-    #         temp = set()
-    #         temp.add(labs[i])
-    #         temp.add(labs[i+1])
-    #         lab_pairs.append(temp)
-    #     temp = set()
-    #     temp.add(labs[-2])
-    #     temp.add(labs[-1])
-    #     lab_pairs.append(temp)
-
-
-    # for i in range(data_length):
-    #     batch = set()
-    #     batch.add(batch_list[i])
-    #     for pair in lab_pairs:
-    #         prof = set()
-    #         for l in pair:
-    #             prof.add(professor_list[i])
-    #             # print('\n##################  LABS #######################')
-    #             # print('batch === ',b.year, "-", b.dept_name, "-", b.section)
-    #             # print("course === ", l.course_short_form)
-    #             # print("professor === ", professor_list[i].professor_name)
-    #             # print('#################################################################\n')
-    #         data.append(Data().create_lab_data(batch, pair, prof, 3, 1))
+        lab_pairs = split_labs_into_pairs(pairs)
+        
+        
+        for pair in lab_pairs:
+            # print('\n##################  LABS - paired #######################')
+            # print('lab_pairs === ',l, type(l))
+            # print('#################################################################\n')
+            prof_for_lab_pairs = set()
+            for x in pair:                
+                l = Labs.query.filter_by(course_id=x.course_id).first()
+                p = Professor.query.filter_by(professor_id=l.professor_id).first()
+                if p not in prof_for_lab_pairs:
+                    prof_for_lab_pairs.add(p)
+            
+            batch = set()
+            batch.add(b)
+            # print('\n##################  LABS - Pairable #######################')
+            # print('batch === ',b.year, "-", b.dept_name, "-", b.section,"TYPE(b)=",type(b))
+            # for x in pair:                
+                # print("course === ", x.course_short_form,"TYPE(x)=",type(x))
+            # for prof in prof_for_lab_pairs:
+                # print("professor === ", prof.professor_name,"TYPE(prof)=",type(prof))
+            # print('#################################################################\n')
+            data.append(Data().create_lab_data(batch, pair, prof_for_lab_pairs, 3, 1))
 
     # create pseudo data - for empty slots
+    # empty -- all batches + duration + freq
     batch = set()
     for b in batch_list:
         batch.add(b)
     data.append(Data().create_pseudo_data(batch,1,3))
 
-    # electives --- All batches + 1 course -- OK
-    # lecture -- 1 batch + 1 course + 1 prof -- MAPPING 
-    # lab -- 1 batch + split all labs into pairs + all lab profs
-    # empty -- all batches + duration + freq
+
 
     # data = [
     #     Data().create_compound_data({batch_list[0], batch_list[1]}, {course_list[0]}),
@@ -128,17 +165,17 @@ def initiation(course_list,professor_list,batch_list):
     # ]
     # # print(data, len(data))
 
-    return batch_list, professor_list, course_list, data
+    return batch_list,mapped_lectures,mapped_electives,mapped_labs, data
 
 
-def scheduler(course_list,professor_list,batch_list):
-    batch_list, professor_list, course_list, data = initiation(course_list,professor_list,batch_list)
-    # print(batch_list, professor_list, course_list, data)
-    print('\n#################################################################')
-    print('data === ', data)
-    print('#################################################################\n')
-    print("data length === \n",len(data))
-    print('#################################################################\n')
+def scheduler(batch_list,mapped_lectures,mapped_electives,mapped_labs):
+    batch_list,mapped_lectures,mapped_electives,mapped_labs, data = initiation(batch_list,mapped_lectures,mapped_electives,mapped_labs)
+
+    # print('\n#################################################################')
+    # print('data === ', data)
+    # print('#################################################################\n')
+    # print("data length === \n",len(data))
+    # print('#################################################################\n')
 
     # Start
     generation = 1
@@ -197,4 +234,4 @@ def scheduler(course_list,professor_list,batch_list):
 
         if generation > 4000:
             print("Re-Schedule")
-            scheduler(course_list,professor_list,batch_list)
+            scheduler(batch_list,mapped_lectures,mapped_electives,mapped_labs)

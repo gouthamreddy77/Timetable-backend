@@ -135,9 +135,9 @@ class Timetable:
                         else:
                             mat[d, t][2].update(gene.data.room)
                 t += 1
-        print('\n##################  COLLISIONS #######################')
-        print('batch_collision: ' + str(batch_collision) + ' faculty_collision: ' + str(faculty_collision) + ' room_collision: ' + str(room_collision))
-        print('#################################################################\n')
+        # print('\n##################  COLLISIONS #######################')
+        # print('batch_collision: ' + str(batch_collision) + ' faculty_collision: ' + str(faculty_collision) + ' room_collision: ' + str(room_collision))
+        # print('#################################################################\n')
         return (batch_collision + faculty_collision + room_collision), mat
 
     def print_test(self):

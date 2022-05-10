@@ -1,0 +1,7 @@
+batch_id,course_id,professor_id,can_be_paired
+1,18PC2CS06,17,1
+1,18PW4CS04,12,0
+1,18PW4CS05,6,0
+2,18PC2CS06,11,1
+2,18PW4CS04,10,0
+2,18PW4CS05,19,0

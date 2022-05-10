@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request
 from ttg import app, db
-from ttg.model import Professor, Course, Batch, Mapping
+from ttg.model import Professor, Course, Batch, Lectures, Labs, Electives
 from ttg.new_scheduler import scheduler
 from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.utils import secure_filename
@@ -198,15 +198,10 @@ def generate_timetable():
 		# 	t = Batch(4, 'CSE', _+1, b_room[_])
 		# 	batch_list.append(t)
 
-		mapped_data = Mapping.query.all()
-		batch_list, course_list, professor_list = [], [], []
-		for md in mapped_data:
-			batch = Batch.query.filter_by(batch_id=md.batch_id).first()
-			batch_list.append(batch)
-			course = Course.query.filter_by(course_id=md.course_id).first()
-			course_list.append(course)
-			professor = Professor.query.filter_by(professor_id=md.professor_id).first()
-			professor_list.append(professor)
+		mapped_electives = Electives.query.all()
+		mapped_labs = Labs.query.all()
+		mapped_lectures = Lectures.query.all()
+		batch_list = Batch.query.all()
 
 
 		# batch_list = Batch.query.all()
@@ -214,18 +209,20 @@ def generate_timetable():
 		print('batch_list === ',batch_list)
 		print('#################################################################\n')
 
-		# course_list = Course.query.all()
 		print('\n#################################################################')
-		print('course_list === ', course_list)
+		print('mapped_labs === ', mapped_labs)
 		print('#################################################################\n')
 
-		# faculty_list = p=Professor.query.all()
 		print('\n#################################################################')
-		print('faculty_list === ', professor_list)
+		print('mapped_lectures === ', mapped_lectures)
+		print('#################################################################\n')
+
+		print('\n#################################################################')
+		print('mapped_electives === ', mapped_electives)
 		print('#################################################################\n')
 
 		timetable = {}
-		timetable = scheduler(course_list,professor_list,batch_list)
+		timetable = scheduler(batch_list,mapped_lectures,mapped_electives,mapped_labs)
 		print('\n#################################################################')
 		print("TIMETABLE === \n",timetable)
 		print('#################################################################\n')

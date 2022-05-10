@@ -1,5 +1,13 @@
 professor_id,professor_name
 1,Dr. C Kiran Mai
+2,Dr. M Raja Sekar
+3,Dr.B.V.Kiranmayee
+4,Dr.S Nagini
+5,Mrs.V.Baby
+6,Dr.P V Siva Kumar
+7,Dr.Sagar Yeruva
+8,Dr.A Brahmananda
+9,Dr.P Subhash
 10,Kousar Nikhath
 11,Mrs.N V Sailaja
 12,Mrs.Vijaya Saraswathi
@@ -10,7 +18,6 @@ professor_id,professor_name
 17,Sandeep Chaitanya
 18,Mrs.Indira
 19,Hari Priya
-2,Dr. M Raja Sekar
 20,Chalumuru Suresh
 21,Mr.Malige Gangappa
 22,Dr.Deepak Sukheja
@@ -18,11 +25,3 @@ professor_id,professor_name
 24,Mrs.Tejaswi Potluri
 25,Mr.K.Bheemalingappa
 26,Mrs.P.Jyothi
-27,
-3,Dr.B.V.Kiranmayee
-4,Dr.S Nagini
-5,Mrs.V.Baby
-6,Dr.P V Siva Kumar
-7,Dr.Sagar Yeruva
-8,Dr.A Brahmananda
-9,Dr.P Subhash

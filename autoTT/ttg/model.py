@@ -57,23 +57,23 @@ class Course(db.Model):
     def __repr__(self):
         return str(self.course_short_form)
 
-class MappingLectures(db.Model):
+class Lectures(db.Model):
     __table_args__ = {'extend_existing': True}
     batch_id = db.Column(db.Integer, db.ForeignKey('batch.batch_id'), nullable=False,primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False,primary_key=True)
     professor_id = db.Column(db.Integer, db.ForeignKey('professor.professor_id'), nullable=False,primary_key=True)
 
-class MappingLabs(db.Model):
+class Labs(db.Model):
     __table_args__ = {'extend_existing': True}
     batch_id = db.Column(db.Integer, db.ForeignKey('batch.batch_id'), nullable=False,primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False,primary_key=True)
     professor_id = db.Column(db.Integer, db.ForeignKey('professor.professor_id'), nullable=False,primary_key=True)
+    can_be_paired = db.Column(db.Integer,nullable=False)
 
-class MappingElectives(db.Model):
+class Electives(db.Model):
     __table_args__ = {'extend_existing': True}
-    batch_id = db.Column(db.Integer, db.ForeignKey('batch.batch_id'), nullable=False,primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False,primary_key=True)
-
+    professor_id = db.Column(db.Integer, db.ForeignKey('professor.professor_id'), nullable=False,primary_key=True)
 
 
 # TODO: Create [Room & Branch] Class According to USE CASE
