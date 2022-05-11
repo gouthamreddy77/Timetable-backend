@@ -131,40 +131,6 @@ def initiation(batch_list,mapped_lectures,mapped_electives,mapped_labs):
     data.append(Data().create_pseudo_data(batch,1,3))
 
 
-
-    # data = [
-    #     Data().create_compound_data({batch_list[0], batch_list[1]}, {course_list[0]}),
-    #     Data().create_lecture_data({batch_list[0]}, {course_list[1]}, {professor_list[7]}),
-    #     Data().create_lecture_data({batch_list[0]}, {course_list[2]}, {professor_list[14]}),
-    #     Data().create_lecture_data({batch_list[0]}, {course_list[3]}, {professor_list[16]}),
-    #     Data().create_lecture_data({batch_list[0]}, {course_list[4]}, {professor_list[4]}),
-    #     Data().create_lecture_data({batch_list[0]}, {course_list[5]}, {professor_list[3]}),
-    #     Data().create_lab_data({batch_list[0]}, {course_list[6], course_list[7]},
-    #                            {professor_list[14], professor_list[15], professor_list[3], professor_list[11]}, 3,
-    #                            1),
-    #     Data().create_lab_data({batch_list[0]}, {course_list[6], course_list[8]},
-    #                            {professor_list[14], professor_list[15], professor_list[21], professor_list[20]}, 3, 1),
-    #     Data().create_lab_data({batch_list[0]}, {course_list[7], course_list[8]},
-    #                            {professor_list[3], professor_list[11], professor_list[21], professor_list[20]}, 3, 1),
-    #     Data().create_pseudo_data({batch_list[0]}, 1, 3),
-
-    #     # Data().create_compound_data({batch_list[1], batch_list[1]}, {course_list[0]}),
-    #     Data().create_lecture_data({batch_list[1]}, {course_list[1]}, {professor_list[13]}),
-    #     Data().create_lecture_data({batch_list[1]}, {course_list[2]}, {professor_list[10]}),
-    #     Data().create_lecture_data({batch_list[1]}, {course_list[3]}, {professor_list[9]}),
-    #     Data().create_lecture_data({batch_list[1]}, {course_list[4]}, {professor_list[8]}),
-    #     Data().create_lecture_data({batch_list[1]}, {course_list[5]}, {professor_list[23]}),
-    #     Data().create_lab_data({batch_list[1]}, {course_list[6], course_list[7]},
-    #                            {professor_list[10], professor_list[25], professor_list[23], professor_list[8]}, 3,
-    #                            1),
-    #     Data().create_lab_data({batch_list[1]}, {course_list[6], course_list[8]},
-    #                            {professor_list[10], professor_list[25], professor_list[12], professor_list[17]}, 3, 1),
-    #     Data().create_lab_data({batch_list[1]}, {course_list[7], course_list[8]},
-    #                            {professor_list[23], professor_list[8], professor_list[12], professor_list[17]}, 3, 1),
-    #     Data().create_pseudo_data({batch_list[1]}, 1, 3),
-    # ]
-    # # print(data, len(data))
-
     return batch_list,mapped_lectures,mapped_electives,mapped_labs, data
 
 

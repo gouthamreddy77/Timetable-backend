@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request
 from ttg import app, db
-from ttg.model import Professor, Course, Batch, Lectures, Labs, Electives
+from ttg.model import Professor, Course, Batch, Lectures, Labs, Electives, Department, Room, User
 from ttg.new_scheduler import scheduler
 from flask_login import login_user, current_user, logout_user, login_required
 from werkzeug.utils import secure_filename
@@ -8,12 +8,14 @@ import os
 from tkinter import *
 from tkinter import ttk
 
+#####################  HOME  ##############################
 
 @app.route('/')
 def home():
 	return {
 	'status': 'SUCCESS'
 	}
+###################  ADD COURSE  ###########################
 
 @login_required
 @app.route('/add_course',methods=['GET','POST'])
@@ -66,6 +68,8 @@ def add_course():
 			'status': 'SUCCESS'
 			}
 
+###################  DELETE COURSE  ###########################
+
 @login_required
 @app.route('/delete_course',methods=['GET','POST'])
 def delete_course():
@@ -80,6 +84,8 @@ def delete_course():
 			'status': 'SUCCESS'
 			}
 
+###################  VIEW COURSE  ###########################
+
 @app.route('/view_courses',methods=['GET'])
 def view_courses():
 	if request.method=='GET':
@@ -89,7 +95,7 @@ def view_courses():
 			'data': c
 			}
 
-###################################################################
+###################  ADD FACULTY  ###########################
 
 @login_required
 @app.route('/add_faculty',methods=['GET','POST'])
@@ -127,6 +133,7 @@ def add_faculty():
 			'status': 'SUCCESS'
 			}
 
+###################  DELETE FACULTY  ###########################
 
 @login_required
 @app.route('/delete_faculty',methods=['GET','POST'])
@@ -142,6 +149,8 @@ def delete_faculty():
 			'status': 'SUCCESS'
 			}
 
+###################  VIEW FACULTY  ###########################
+
 @app.route('/view_faculty',methods=['GET'])
 def view_faculty():
 	if request.method=='GET':
@@ -151,7 +160,7 @@ def view_faculty():
 			'data': p
 			}
 
-###################################################################
+###################  PRINT TT IN TKINTER  ###########################
 
 
 def tk_print(d):
@@ -184,6 +193,39 @@ def tk_print(d):
         root.mainloop()
 
 
+###################  VIEW DEPARTMENTS  ###########################
+@app.route('/view_departments',methods=['GET'])
+def view_departments():
+	if request.method=='GET':
+		d=Department.query().all()
+		return {
+			'status': 'SUCCESS',
+			'data': d
+			}
+
+###################  VIEW ROOMS  ###########################
+@app.route('/view_rooms',methods=['GET'])
+def view_rooms():
+	if request.method=='GET':
+		r=Room.query().all()
+		return {
+			'status': 'SUCCESS',
+			'data': r
+			}
+
+###################  VIEW BATCH  ###########################
+@app.route('/view_batch',methods=['GET'])
+def view_batch():
+	if request.method=='GET':
+		b=Batch.query().all()
+		return {
+			'status': 'SUCCESS',
+			'data': b
+			}
+
+
+###################  GENERATE TIMETABLE  ###########################
+
 @login_required
 @app.route('/generate_timetable',methods=['GET'])
 def generate_timetable():
@@ -204,22 +246,21 @@ def generate_timetable():
 		batch_list = Batch.query.all()
 
 
-		# batch_list = Batch.query.all()
-		print('\n#################################################################')
-		print('batch_list === ',batch_list)
-		print('#################################################################\n')
+		# print('\n#################################################################')
+		# print('batch_list === ',batch_list)
+		# print('#################################################################\n')
 
-		print('\n#################################################################')
-		print('mapped_labs === ', mapped_labs)
-		print('#################################################################\n')
+		# print('\n#################################################################')
+		# print('mapped_labs === ', mapped_labs)
+		# print('#################################################################\n')
 
-		print('\n#################################################################')
-		print('mapped_lectures === ', mapped_lectures)
-		print('#################################################################\n')
+		# print('\n#################################################################')
+		# print('mapped_lectures === ', mapped_lectures)
+		# print('#################################################################\n')
 
-		print('\n#################################################################')
-		print('mapped_electives === ', mapped_electives)
-		print('#################################################################\n')
+		# print('\n#################################################################')
+		# print('mapped_electives === ', mapped_electives)
+		# print('#################################################################\n')
 
 		timetable = {}
 		timetable = scheduler(batch_list,mapped_lectures,mapped_electives,mapped_labs)
