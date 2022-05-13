@@ -160,6 +160,36 @@ def view_faculty():
 			'data': p
 			}
 
+###################  VIEW DEPARTMENTS  ###########################
+@app.route('/view_departments',methods=['GET'])
+def view_departments():
+	if request.method=='GET':
+		d=Department.query().all()
+		return {
+			'status': 'SUCCESS',
+			'data': d
+			}
+
+###################  VIEW ROOMS  ###########################
+@app.route('/view_rooms',methods=['GET'])
+def view_rooms():
+	if request.method=='GET':
+		r=Room.query().all()
+		return {
+			'status': 'SUCCESS',
+			'data': r
+			}
+
+###################  VIEW BATCH  ###########################
+@app.route('/view_batch',methods=['GET'])
+def view_batch():
+	if request.method=='GET':
+		b=Batch.query().all()
+		return {
+			'status': 'SUCCESS',
+			'data': b
+			}
+
 ###################  PRINT TT IN TKINTER  ###########################
 
 
@@ -193,35 +223,22 @@ def tk_print(d):
         root.mainloop()
 
 
-###################  VIEW DEPARTMENTS  ###########################
-@app.route('/view_departments',methods=['GET'])
-def view_departments():
-	if request.method=='GET':
-		d=Department.query().all()
-		return {
-			'status': 'SUCCESS',
-			'data': d
-			}
-
-###################  VIEW ROOMS  ###########################
-@app.route('/view_rooms',methods=['GET'])
-def view_rooms():
-	if request.method=='GET':
-		r=Room.query().all()
-		return {
-			'status': 'SUCCESS',
-			'data': r
-			}
-
-###################  VIEW BATCH  ###########################
-@app.route('/view_batch',methods=['GET'])
-def view_batch():
-	if request.method=='GET':
-		b=Batch.query().all()
-		return {
-			'status': 'SUCCESS',
-			'data': b
-			}
+###################  RE FORMAT TIMETABLE  ###########################
+def reformat_timetable(d):
+	dic1={}
+	first=True
+	for i in d:
+		if first!=True:
+			dic1[i]=d[i]
+		first=False
+	for i in d:
+		for j in range(1,len(d[i])):
+			for k in range(len(d[i][j])):
+				if d[i][j][k]!=0:
+					for l in dic1:
+						dic1[l][j][k]=d[i][j][k]
+		break
+	return dic1
 
 
 ###################  GENERATE TIMETABLE  ###########################
@@ -264,9 +281,11 @@ def generate_timetable():
 
 		timetable = {}
 		timetable = scheduler(batch_list,mapped_lectures,mapped_electives,mapped_labs)
+		timetable = reformat_timetable(timetable)
 		print('\n#################################################################')
 		print("TIMETABLE === \n",timetable)
 		print('#################################################################\n')
+		
 		tk_print(timetable)
 		return {
 			'status': 'SUCCESS',
