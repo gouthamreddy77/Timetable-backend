@@ -5,7 +5,7 @@ from ttg.model import *
 import ttg.timetable as timetable
 from ttg.model import Professor, Course, Batch, Lectures, Labs, Electives
 
-POPULATION_SIZE = 25
+POPULATION_SIZE = 27
 
 def split_labs_into_pairs(labs):
     # print('\n##################  LABS - paired in function #######################')
@@ -134,8 +134,9 @@ def initiation(batch_list,mapped_lectures,mapped_electives,mapped_labs):
     return batch_list,mapped_lectures,mapped_electives,mapped_labs, data
 
 
-def scheduler(batch_list,mapped_lectures,mapped_electives,mapped_labs):
-    batch_list,mapped_lectures,mapped_electives,mapped_labs, data = initiation(batch_list,mapped_lectures,mapped_electives,mapped_labs)
+def scheduler(batch_list,mapped_lectures,mapped_electives,mapped_labs,data=[],retry=False):
+    if retry == False:
+        batch_list,mapped_lectures,mapped_electives,mapped_labs, data = initiation(batch_list,mapped_lectures,mapped_electives,mapped_labs)
 
     # print('\n#################################################################')
     # print('data === ', data)
@@ -198,6 +199,6 @@ def scheduler(batch_list,mapped_lectures,mapped_electives,mapped_labs):
         print("generation No : ", generation)
         print("Collisions : ", population[0].collisions)
 
-        if generation > 4000:
+        if generation > 3333:
             print("Re-Schedule")
-            scheduler(batch_list,mapped_lectures,mapped_electives,mapped_labs)
+            scheduler(batch_list,mapped_lectures,mapped_electives,mapped_labs,data,True)

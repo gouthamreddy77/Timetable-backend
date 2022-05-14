@@ -1,5 +1,6 @@
 from ttg import db, login_manager
 from flask_login import UserMixin
+from sqlalchemy import inspect
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -14,21 +15,27 @@ class User(db.Model,UserMixin):
     username=db.Column(db.String(20),unique=True,nullable=False)
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.password}')"
+    def toDict(self):
+        return { c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs }
 
 # productid = db.Column(db.Integer, db.ForeignKey('product.productid'), nullable=False, primary_key=True)
 
 class Department(db.Model):
-    __table_args__ = {'extend_existing': True}
+    # __table_args__ = {'extend_existing': True}
     dept_id = db.Column(db.Integer,primary_key=True)
     dept_name = db.Column(db.String(10),unique=True,nullable=False)
+    def toDict(self):
+        return { c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs }
 
 class Room(db.Model):
-    __table_args__ = {'extend_existing': True}
+    # __table_args__ = {'extend_existing': True}
     room_id = db.Column(db.Integer,primary_key=True)
     room_no = db.Column(db.Integer,unique=True,nullable=False)
+    def toDict(self):
+        return { c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs }
 
 class Batch(db.Model):
-    __table_args__ = {'extend_existing': True}
+    # __table_args__ = {'extend_existing': True}
     batch_id = db.Column(db.Integer,primary_key=True)
     year = db.Column(db.Integer,nullable=False)
     dept_name = db.Column(db.String(10), db.ForeignKey('department.dept_name'), nullable=False)
@@ -37,16 +44,20 @@ class Batch(db.Model):
     room_no = db.Column(db.Integer,db.ForeignKey('room.room_no'),nullable=False)
     def __repr__(self):
         return str(self.year)+" "+str(self.dept_name)+" "+str(self.section) # IV CSE 2
+    def toDict(self):
+        return { c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs }
 
 
 class Professor(db.Model):
-    __table_args__ = {'extend_existing': True}
+    # __table_args__ = {'extend_existing': True}
     professor_id = db.Column(db.String(20),primary_key=True)
     professor_name = db.Column(db.String(50),unique=True,nullable=False)
     # prof_courses = db.Column(db.String(100),unique=True,nullable=False)
+    def toDict(self):
+        return { c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs }
 
 class Course(db.Model):
-    __table_args__ = {'extend_existing': True}
+    # __table_args__ = {'extend_existing': True}
     course_id = db.Column(db.String(20),primary_key=True)
     course_name = db.Column(db.String(50),unique=True,nullable=False)
     course_short_form = db.Column(db.String(10),unique=True,nullable=False)
@@ -56,24 +67,32 @@ class Course(db.Model):
     preferred_rooms =db.Column(db.Integer, db.ForeignKey('room.room_no'), nullable=False)
     def __repr__(self):
         return str(self.course_short_form)
+    def toDict(self):
+        return { c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs }
 
 class Lectures(db.Model):
-    __table_args__ = {'extend_existing': True}
+    # __table_args__ = {'extend_existing': True}
     batch_id = db.Column(db.Integer, db.ForeignKey('batch.batch_id'), nullable=False,primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False,primary_key=True)
     professor_id = db.Column(db.Integer, db.ForeignKey('professor.professor_id'), nullable=False,primary_key=True)
+    def toDict(self):
+        return { c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs }
 
 class Labs(db.Model):
-    __table_args__ = {'extend_existing': True}
+    # __table_args__ = {'extend_existing': True}
     batch_id = db.Column(db.Integer, db.ForeignKey('batch.batch_id'), nullable=False,primary_key=True)
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False,primary_key=True)
     professor_id = db.Column(db.Integer, db.ForeignKey('professor.professor_id'), nullable=False,primary_key=True)
     can_be_paired = db.Column(db.Integer,nullable=False)
+    def toDict(self):
+        return { c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs }
 
 class Electives(db.Model):
-    __table_args__ = {'extend_existing': True}
+    # __table_args__ = {'extend_existing': True}
     course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'), nullable=False,primary_key=True)
     professor_id = db.Column(db.Integer, db.ForeignKey('professor.professor_id'), nullable=False,primary_key=True)
+    def toDict(self):
+        return { c.key: getattr(self, c.key) for c in inspect(self).mapper.column_attrs }
 
 
 # TODO: Create [Room & Branch] Class According to USE CASE
